@@ -19,6 +19,20 @@ export interface JobApplication {
     notes: string | null;
     created_at: string;
     updated_at: string;
+    resumes?: Resume[];
+}
+
+export interface Resume {
+    id: number;
+    user_id: number;
+    job_application_id: number;
+    title: string;
+    version: string | null;
+    file_path: string;
+    original_filename: string;
+    file_size: number;
+    created_at: string;
+    updated_at: string;
 }
 
 export type PageProps<

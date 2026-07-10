@@ -26,6 +26,9 @@ export default function Create() {
         applied_date: '',
         interview_at: '',
         notes: '',
+        resume_title: '',
+        resume_version: '',
+        resume_file: null as File | null,
     });
 
     const submit: FormEventHandler = (e) => {
@@ -183,6 +186,51 @@ export default function Create() {
                                     placeholder="Add any notes about this application..."
                                 />
                                 <InputError message={errors.notes} className="mt-2" />
+                            </div>
+
+                            {/* Resume Upload */}
+                            <div className="border-t border-gray-100 pt-6 mt-6">
+                                <h3 className="text-lg font-medium text-gray-900 mb-4">Initial Resume (Optional)</h3>
+                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                    <div>
+                                        <InputLabel htmlFor="resume_title" value="Resume Title" />
+                                        <TextInput
+                                            id="resume_title"
+                                            className="mt-1 block w-full"
+                                            value={data.resume_title}
+                                            onChange={(e) => setData('resume_title', e.target.value)}
+                                            placeholder="e.g. Software Engineer Resume"
+                                        />
+                                        <InputError message={errors.resume_title} className="mt-2" />
+                                    </div>
+                                    <div>
+                                        <InputLabel htmlFor="resume_version" value="Version" />
+                                        <TextInput
+                                            id="resume_version"
+                                            className="mt-1 block w-full"
+                                            value={data.resume_version}
+                                            onChange={(e) => setData('resume_version', e.target.value)}
+                                            placeholder="e.g. v1.0"
+                                        />
+                                        <InputError message={errors.resume_version} className="mt-2" />
+                                    </div>
+                                    <div>
+                                        <InputLabel htmlFor="resume_file" value="PDF File (Max: 5MB)" />
+                                        <input
+                                            id="resume_file"
+                                            type="file"
+                                            accept="application/pdf"
+                                            className="mt-1 block w-full text-sm text-gray-500
+                                                file:mr-4 file:py-2 file:px-4
+                                                file:rounded-md file:border-0
+                                                file:text-sm file:font-semibold
+                                                file:bg-indigo-50 file:text-indigo-700
+                                                hover:file:bg-indigo-100"
+                                            onChange={(e) => setData('resume_file', e.target.files?.[0] || null)}
+                                        />
+                                        <InputError message={errors.resume_file} className="mt-2" />
+                                    </div>
+                                </div>
                             </div>
 
                             {/* Actions */}

@@ -39,6 +39,9 @@ class StoreJobApplicationRequest extends FormRequest
             'applied_date' => ['nullable', 'date'],
             'interview_at' => ['nullable', 'date'],
             'notes' => ['nullable', 'string', 'max:5000'],
+            'resume_file' => ['nullable', 'file', 'mimes:pdf', 'max:5120'],
+            'resume_title' => ['nullable', 'string', 'max:255'],
+            'resume_version' => ['nullable', 'string', 'max:50'],
         ];
     }
 }

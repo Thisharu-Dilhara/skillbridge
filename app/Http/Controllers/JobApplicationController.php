@@ -41,9 +41,25 @@ class JobApplicationController extends Controller
      */
     public function store(StoreJobApplicationRequest $request): RedirectResponse
     {
-        $request->user()->jobApplications()->create($request->validated());
+        $application = $request->user()->jobApplications()->create(
+            $request->safe()->except(['resume_file', 'resume_title', 'resume_version'])
+        );
 
-        return Redirect::route('applications.index')
+        if ($request->hasFile('resume_file')) {
+            $file = $request->file('resume_file');
+            $path = $file->store("resumes/{$application->id}", 'local');
+
+            $application->resumes()->create([
+                'user_id' => $request->user()->id,
+                'title' => $request->validated('resume_title') ?? 'Resume',
+                'version' => $request->validated('resume_version'),
+                'file_path' => $path,
+                'original_filename' => $file->getClientOriginalName(),
+                'file_size' => $file->getSize(),
+            ]);
+        }
+
+        return Redirect::route('applications.show', $application)
             ->with('success', 'Job application created successfully.');
     }
 
@@ -53,6 +69,8 @@ class JobApplicationController extends Controller
     public function show(JobApplication $application): Response
     {
         $this->authorizeAccess($application);
+
+        $application->load('resumes');
 
         return Inertia::render('Applications/Show', [
             'application' => $application,
